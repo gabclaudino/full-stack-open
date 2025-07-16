@@ -1,6 +1,4 @@
 sequenceDiagram
-    participant cliente
-    participant servidor
   
     cliente ->>+ servidor: POST https://studies.cs.helsinki.fi/exampleapp/new_noten <br> Form Data: note "message example"
     activate servidor
@@ -15,5 +13,3 @@ sequenceDiagram
     servidor -->> cliente: JS file
     cliente ->> servidor: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     servidor -->> cliente: JSON file
-
-
