@@ -1,1 +1,1 @@
-teste
+ex 0.6 sequence diagram
