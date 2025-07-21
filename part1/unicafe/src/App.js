@@ -40,6 +40,17 @@ const App = () => {
     console.log("novo valor de bad:", novoValor)
   }
 
+  let average
+  let positives
+  if (!good && !neutral && !bad) {
+    average = 0
+    positives = 0
+  }
+  else {
+    average = (good * 1 + neutral * 0 + bad * -1) / (good + neutral + bad)
+    positives = (good / (good + neutral + bad)) * 100
+  }
+
 
   return (
     <div>
@@ -58,6 +69,11 @@ const App = () => {
       <Exibir text={"good"} valor={good} />
       <Exibir text={"neutral"} valor={neutral} />
       <Exibir text={"bad"} valor={bad} />
+
+      <Exibir text={"all"} valor={good + bad + neutral} />
+      <Exibir text={"average"} valor={average} />
+      <Exibir text={"positive"} valor={positives + "%"} />
+
     </div>
   )
 }
