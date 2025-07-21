@@ -18,6 +18,39 @@ const Exibir = (props) => {
   )
 }
 
+const Statistics = (props) => {
+  let average
+  let positives
+  if (!props.good && !props.neutral && !props.bad) {
+    return (
+      <div>
+        <p>
+          No feedback given
+        </p>
+      </div>
+    )
+  }
+  else {
+    average = (props.good * 1 + props.neutral * 0 + props.bad * -1) / (props.good + props.neutral + props.bad)
+    positives = (props.good / (props.good + props.neutral + props.bad)) * 100
+  }
+
+  return (
+    <div>
+      <Exibir text={"good"} valor={props.good} />
+      <Exibir text={"neutral"} valor={props.neutral} />
+      <Exibir text={"bad"} valor={props.bad} />
+
+      <Exibir text={"all"} valor={props.good + props.bad + props.neutral} />
+      <Exibir text={"average"} valor={average} />
+      <Exibir text={"positive"} valor={positives + "%"} />
+    </div>
+  )
+
+
+
+
+}
 
 const App = () => {
   // salve os cliques de cada botão em seu próprio estado
@@ -40,17 +73,6 @@ const App = () => {
     console.log("novo valor de bad:", novoValor)
   }
 
-  let average
-  let positives
-  if (!good && !neutral && !bad) {
-    average = 0
-    positives = 0
-  }
-  else {
-    average = (good * 1 + neutral * 0 + bad * -1) / (good + neutral + bad)
-    positives = (good / (good + neutral + bad)) * 100
-  }
-
 
   return (
     <div>
@@ -66,13 +88,17 @@ const App = () => {
 
       <h1>statistics</h1>
 
-      <Exibir text={"good"} valor={good} />
+      {/* <Exibir text={"good"} valor={good} />
       <Exibir text={"neutral"} valor={neutral} />
       <Exibir text={"bad"} valor={bad} />
 
       <Exibir text={"all"} valor={good + bad + neutral} />
       <Exibir text={"average"} valor={average} />
-      <Exibir text={"positive"} valor={positives + "%"} />
+      <Exibir text={"positive"} valor={positives + "%"} /> */}
+
+      <Statistics good={good} neutral={neutral} bad={bad} />
+
+
 
     </div>
   )
