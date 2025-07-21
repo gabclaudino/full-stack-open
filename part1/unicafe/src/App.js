@@ -10,10 +10,17 @@ const Botao = (props) => {
   )
 }
 
-const Exibir = (props) => {
+const StatisticLine = (props) => {
   return (
     <div>
-      {props.text} {props.valor}
+      <table>
+        <td>
+          {props.text}
+        </td>
+        <td>
+          {props.valor}
+        </td>
+      </table>
     </div>
   )
 }
@@ -36,21 +43,41 @@ const Statistics = (props) => {
   }
 
   return (
-    <div>
-      <Exibir text={"good"} valor={props.good} />
-      <Exibir text={"neutral"} valor={props.neutral} />
-      <Exibir text={"bad"} valor={props.bad} />
-
-      <Exibir text={"all"} valor={props.good + props.bad + props.neutral} />
-      <Exibir text={"average"} valor={average} />
-      <Exibir text={"positive"} valor={positives + "%"} />
-    </div>
+    <table>
+      <tbody>
+        <tr>
+          <td>good</td>
+          <td>{props.good}</td>
+        </tr>
+        <tr>
+          <td>neutral</td>
+          <td>{props.neutral}</td>
+        </tr>
+        <tr>
+          <td>bad</td>
+          <td>{props.bad}</td>
+        </tr>
+        <tr>
+          <td>all</td>
+          <td>{props.good + props.bad + props.neutral}</td>
+        </tr>
+        <tr>
+          <td>average</td>
+          <td>{average}</td>
+        </tr>
+        <tr>
+          <td>positives</td>
+          <td>{positives}%</td>
+        </tr>
+      </tbody>
+    </table>
   )
-
-
-
-
 }
+
+
+
+
+
 
 const App = () => {
   // salve os cliques de cada botão em seu próprio estado
@@ -76,30 +103,15 @@ const App = () => {
 
   return (
     <div>
-      {/* <Botao func={aumentarGood(good + 1)} text={"good"} />
-      <Botao func={aumentarNeutral(neutral + 1)} text={"neutral"} />
-      <Botao func={aumentarBad(bad + 1)} text={"bad"} /> */}
-
       <h1>give feedbacks</h1>
 
-      <button onClick={aumentarGood(good + 1)}>good</button>
-      <button onClick={aumentarNeutral(neutral + 1)}>neutral</button>
-      <button onClick={aumentarBad(bad + 1)}>bad</button>
+      <Botao func={aumentarGood(good + 1)} text={"good"} />
+      <Botao func={aumentarNeutral(neutral + 1)} text={"neutral"} />
+      <Botao func={aumentarBad(bad + 1)} text={"bad"} />
 
       <h1>statistics</h1>
 
-      {/* <Exibir text={"good"} valor={good} />
-      <Exibir text={"neutral"} valor={neutral} />
-      <Exibir text={"bad"} valor={bad} />
-
-      <Exibir text={"all"} valor={good + bad + neutral} />
-      <Exibir text={"average"} valor={average} />
-      <Exibir text={"positive"} valor={positives + "%"} /> */}
-
       <Statistics good={good} neutral={neutral} bad={bad} />
-
-
-
     </div>
   )
 }
