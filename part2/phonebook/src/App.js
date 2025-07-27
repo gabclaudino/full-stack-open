@@ -57,6 +57,10 @@ const App = () => {
           .then(returnedPerson => {
             setPersons(persons.map(p => p.name !== newPerson.name ? p : returnedPerson))
           })
+          .catch(error => {
+            alert(`${newPerson.name} was already deleted from server`)
+            setPersons(persons.filter(p => p.name !== newPerson.name))
+          })
       }
       return
     }
