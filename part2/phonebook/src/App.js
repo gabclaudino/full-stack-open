@@ -1,23 +1,23 @@
-import { useState, useSyncExternalStore, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Person from './components/Person'
 import Filter from './components/Filter'
 import Form from './components/Form'
 import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
 
   useEffect(() => {
     console.log('effect')
-    axios.get('http://localhost:3001/persons').then((response) => {
-      console.log('promisse fulfilled')
-      setPersons(response.data)
-    })
+    personService.
+      getAll()
+      .then((response) => {
+        console.log('promisse fulfilled')
+        setPersons(response)
+      })
   }, [])
   console.log('render', persons.length, 'persons')
-
-
-  let id = persons.length
 
   const [newName, setNewName] = useState('')
 
@@ -45,24 +45,49 @@ const App = () => {
 
     const newPerson = {
       name: newName,
-      number: newNumber,
-      id: ++id
+      number: newNumber
     }
 
     const hasName = persons.some(person => person.name === newPerson.name)
     if (hasName) {
-      alert(`${newPerson.name} is already added to phonebook`)
+      if (window.confirm(`${newPerson.name} is already added to the phonebook, replace the old number with a new one?`)) {
+        console.log(persons.find(p => p.name === newPerson.name))
+        personService
+          .updatePerson(persons.find(p => p.name === newPerson.name).id, newPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(p => p.name !== newPerson.name ? p : returnedPerson))
+          })
+      }
       return
     }
 
-    setPersons(persons.concat(newPerson))
-    setNewNumber('')
-    setNewName('')
+    personService
+      .createPerson(newPerson)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewNumber('')
+        setNewName('')
+      })
+
   }
 
   const personsToShow = filter.length == 0
     ? persons
     : persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+
+  const deleteP = (id) => {
+    if (window.confirm(`Are you sure you want to delete ${persons.find(user => user.id == id).name}`)) {
+      personService.deletePerson(id)
+        .then(returnedPerson => {
+          setPersons(persons.filter(p => p.id != id))
+        })
+        .catch(error => {
+          alert("this person was already deleted from server")
+          setPersons(persons.filter(p => p.id != id))
+        })
+    }
+  }
+
 
   return (
     <div>
@@ -72,7 +97,7 @@ const App = () => {
       <Form addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h3>Numbers</h3>
       {personsToShow.map(person => {
-        return <Person person={person} key={person.id} />
+        return <Person person={person} deleteP={() => deleteP(person.id)} key={person.id} />
       })}
     </div>
   )
