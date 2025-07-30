@@ -1,8 +1,8 @@
 const CountryFlag = ({ src, alt }) => {
 
     const flagStyle = {
-        maxWidth: 500,
-        maxHeight: 375
+        maxWidth: 300,
+        maxHeight: 200
     }
 
     return (

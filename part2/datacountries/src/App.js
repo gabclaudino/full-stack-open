@@ -5,11 +5,17 @@ import CountryName from './components/CountryName'
 import Filter from './components/Filter'
 import Language from './components/Langaue'
 import CountryFlag from './components/CountryFlag'
+import Weather from './components/Weather'
+import weatherServices from './services/weather'
 
 function App() {
   const [countries, setCountries] = useState([])
 
   const [filter, setNewFilter] = useState('')
+
+  const [weather, setWeather] = useState({})
+
+  const [selected, setSelected] = useState(null)
 
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
@@ -25,6 +31,21 @@ function App() {
         setCountries(response)
       })
   }, [])
+
+  useEffect(() => {
+    if (countriesToShow.length === 1) {
+      setSelected(countriesToShow[0].capital)
+    }
+  }, [countriesToShow])
+
+  useEffect(() => {
+    if (selected) {
+      weatherServices.getWeather(selected)
+        .then((response) => {
+          setWeather(response)
+        })
+    }
+  }, [selected])
 
   const changeFilter = (country) => {
     setNewFilter(country)
@@ -47,6 +68,7 @@ function App() {
           })}
         </ul>
         <CountryFlag src={country.flags.svg} alt={country.flags.alt} />
+        <Weather weather={weather} />
       </div>
     )
   }
